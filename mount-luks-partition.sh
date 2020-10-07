@@ -42,8 +42,8 @@ printWarning () {
 }
 
 installDependencies () {
-	$distro_name = `lsb_release -i -s`
-	  case "$distro_name" in
+	distro_name=`lsb_release -i -s`
+	case "$distro_name" in
 		Ubuntu)
 			dpkg -s $DEPENDENCIES >/dev/null 2>&1
 			if [[ $? -ne 0 ]]; then
@@ -54,16 +54,16 @@ installDependencies () {
 		*)
 			printError "Other distros not supported yet!"
 			;;
-	
+	esac
 }
 
 findLuksBlkDev () {
     for luksBlkDev in `lsblk -rno path`; do
-            cryptsetup isLuks $luksBlkDev
-            if [[ $? -eq "0" ]]; then
-                    break
-            fi
-            luksBlkDev=""
+        cryptsetup isLuks $luksBlkDev
+        if [[ $? -eq "0" ]]; then
+                break
+        fi
+        luksBlkDev=""
     done
 }
 
